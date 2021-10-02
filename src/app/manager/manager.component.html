@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css">
+
+<div class="container" *ngIf="selectedManager == null">
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+	<div *ngFor="let manager of managers" class="col">
+		<div class="card radius-15">
+			<div class="card-body text-center">
+				<div class="p-4 border radius-15">
+					<img src="{{manager.imageURL}} "width="110" height="110" class="rounded-circle shadow" alt="">
+					<h5 class="mb-0 mt-5">{{manager.firstName}} {{manager.lastName}}</h5>
+					<p class="mb-3">{{manager.qualification}}</p>
+					<div class="list-inline contacts-social mt-3 mb-3"> <a href="javascript:;" class="list-inline-item bg-facebook text-white border-0"><i class="bx bxl-facebook"></i></a>
+						<a href="javascript:;" class="list-inline-item bg-twitter text-white border-0"><i class="bx bxl-twitter"></i></a>
+						<a href="javascript:;" class="list-inline-item bg-linkedin text-white border-0"><i class="bx bxl-linkedin"></i></a>
+					</div>
+					<div class="d-grid"> <a (click)="updateManager(manager)" class="btn btn-outline-primary radius-15">See more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+</div>
+</div>
+
+<div *ngIf="selectedManager != null">
+	<div class="modal-header">
+		<h5 class="modal-title" id="addEmployeeModalLabel"></h5>
+		<button type="button" (click)="selectedManager = null" class="close" data-dismiss="modaleFields" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+		</button>
+	 </div>
+	 <see-more  [manager]="selectedManager"></see-more>
+</div>
