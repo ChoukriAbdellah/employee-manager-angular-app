@@ -25,7 +25,7 @@ export class EmployeeService {
     }
 
     public getEmployees(): Observable<Employee[]> {
-        return this.httpClient.get<Employee[]>(this.ApiServerUrl + 'employee/all', this.httpOptions);
+        return this.httpClient.get<Employee[]>(this.corsPolicy + this.ApiServerUrl + 'employee/all', this.httpOptions);
     } 
     public addEmployee(employee: Employee): Observable<Employee> {
         return this.httpClient.post<Employee>(this.ApiServerUrl + 'employee/add', employee);
