@@ -22,7 +22,6 @@ export class SeeMoreComponent implements OnInit {
         if(this.manager) {
             this.employeeService.getEmployeesByManagerId(this.manager.id).subscribe(employees => {
                 this.employees = employees;
-                console.log(employees);
             })
         }
     }

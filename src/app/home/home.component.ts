@@ -47,7 +47,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.toggleMenu();
-        console.log(this.wrapper.nativeElement);
       }
 
     public initializeForm() {

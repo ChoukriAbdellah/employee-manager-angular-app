@@ -13,19 +13,12 @@ import { environment } from "src/environments/environment";
 export class EmployeeService {
 
     private ApiServerUrl = environment.APIbaseUrl;
-    private corsPolicy = environment.corsPolicy;
-    private  httpOptions = {
-        headers: new HttpHeaders({ 
-          'Access-Control-Allow-Origin':'*',
-          'Authorization':'authkey',
-        })
-      };
 
     constructor(private httpClient: HttpClient) {
     }
 
     public getEmployees(): Observable<Employee[]> {
-        return this.httpClient.get<Employee[]>(this.corsPolicy + this.ApiServerUrl + 'employee/all', this.httpOptions);
+        return this.httpClient.get<Employee[]>(this.ApiServerUrl + 'employee/all');
     } 
     public addEmployee(employee: Employee): Observable<Employee> {
         return this.httpClient.post<Employee>(this.ApiServerUrl + 'employee/add', employee);
