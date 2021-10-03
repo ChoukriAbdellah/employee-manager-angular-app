@@ -1,12 +1,20 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Employee } from "../model/employee";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders} from "@angular/common/http";
 import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
+
+const httpOptions = {
+    headers: new HttpHeaders({ 
+      'Access-Control-Allow-Origin':'*',
+      'Authorization':'authkey',
+    })
+  };
+
 export class EmployeeService {
 
     private ApiServerUrl = environment.APIbaseUrl;
@@ -17,7 +25,7 @@ export class EmployeeService {
     }
 
     public getEmployees(): Observable<Employee[]> {
-        return this.httpClient.get<Employee[]>(this.ApiServerUrl + 'employee/all');
+        return this.httpClient.get<Employee[]>(this.ApiServerUrl + 'employee/all', httpOptions);
     } 
     public addEmployee(employee: Employee): Observable<Employee> {
         return this.httpClient.post<Employee>(this.ApiServerUrl + 'employee/add', employee);
