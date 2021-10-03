@@ -10,13 +10,14 @@ import { environment } from "src/environments/environment";
 export class ManagerService {
 
     private ApiServerUrl = environment.APIbaseUrl;
+    private corsPolicy = environment.corsPolicy;
 
     constructor(private httpClient: HttpClient) {
 
     }
 
     public getManagers(): Observable<Manager[]> {
-        return this.httpClient.get<Manager[]>(this.ApiServerUrl + 'manager/all');
+        return this.httpClient.get<Manager[]>(this.corsPolicy + this.ApiServerUrl + 'manager/all');
     } 
     
 }
