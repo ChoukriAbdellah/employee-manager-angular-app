@@ -10,16 +10,6 @@ import { environment } from "src/environments/environment";
 export class ManagerService {
 
     private ApiServerUrl = environment.APIbaseUrl;
-<<<<<<< HEAD
-=======
-    private corsPolicy = environment.corsPolicy;
-    private  httpOptions = {
-        headers: new HttpHeaders({ 
-          'Access-Control-Allow-Origin':'*',
-          'Authorization':'authkey',
-        })
-      };
->>>>>>> parent of 79b88d2... add http options in employee  services
 
     constructor(private httpClient: HttpClient) {
 
