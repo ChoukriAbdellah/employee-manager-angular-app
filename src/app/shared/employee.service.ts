@@ -17,10 +17,10 @@ export class EmployeeService {
     }
 
     public getEmployees(): Observable<Employee[]> {
-        return this.httpClient.get<Employee[]>(this.corsPolicy + this.ApiServerUrl + 'employee/all');
+        return this.httpClient.get<Employee[]>(this.ApiServerUrl + 'employee/all');
     } 
     public addEmployee(employee: Employee): Observable<Employee> {
-        return this.httpClient.post<Employee>(this.corsPolicy + this.ApiServerUrl + 'employee/add', employee);
+        return this.httpClient.post<Employee>(this.ApiServerUrl + 'employee/add', employee);
     }
 
     public updateEmployee(employee: Employee): Observable<Employee> {
@@ -29,10 +29,10 @@ export class EmployeeService {
     
     public getEmployeesByManagerId(managerId: number) : Observable<Employee[]> {
 
-        return this.httpClient.get<Employee[]>(this.corsPolicy + this.ApiServerUrl + 'employee/all/' + managerId);
+        return this.httpClient.get<Employee[]>(this.ApiServerUrl + 'employee/all/' + managerId);
     }
 
     public deleteEmployee(employeeId: number): Observable<void> {
-        return this.httpClient.delete<void>(this.corsPolicy + this.ApiServerUrl + 'employee/delete/' + employeeId);
+        return this.httpClient.delete<void>(this.ApiServerUrl + 'employee/delete/' + employeeId);
     }
 }
