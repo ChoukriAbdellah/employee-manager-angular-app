@@ -8,10 +8,12 @@ import {
     OnInit,
   } from '@angular/core';
 import { BehaviorSubject, Observable } from "rxjs";
+import { map } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Employee } from "../model/employee";
 import { Modale } from "../model/modal";
 import { EmployeeService } from "../shared/employee.service";
+import { Validators } from '@angular/forms'
 
 
 @Component({
@@ -21,7 +23,9 @@ import { EmployeeService } from "../shared/employee.service";
 
 export class HomeComponent implements OnInit, AfterViewInit {
     public displayEmployeeList : boolean = false;
+    public dataLoaded : boolean = false;
     public employees: Employee[];
+    public searchEmployees: Employee[];
     public selectedEmployee: Employee = null;
     public modal: Modale = {title: '', buttonTitle: ''};
     public modalFields = new BehaviorSubject(this.modal);
@@ -34,12 +38,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     ngOnInit(){
         this.initializeForm();
-        this.employeeService.getEmployees().subscribe(
+        this.employeeService.getEmployees().pipe(
+        )
+        .subscribe(
             (response: Employee[]) => {
                 this.employees = response;
+                this.searchEmployees = this.employees;
+                this.dataLoaded = true;
             }, (error : HttpErrorResponse) => {
                 console.error(error);
-                
+                // stop the loading animation if we have an error
+                this.dataLoaded = true;
             }
         );
         this.modalFields.subscribe();
@@ -51,11 +60,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     public initializeForm() {
         this.employeeForm = this.fb.group({
-            name: '',
-            email: '',
-            jobTitle: '',
-            phoneNumber: '',
-            imageUrl: '',
+            name: ['', Validators.required],
+            email: ['', Validators.required],
+            jobTitle: ['', Validators.required],
+            phoneNumber: ['', Validators.required],
+            imageUrl: ['', Validators.required],
         })
     }
 
@@ -68,9 +77,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         
     }
     
-    public submitForm() {
-        console.log('value entred :', this.employeeForm.get('name').value);
-    }
 
     public toggleModale(actionType: String, employee?: Employee) {
         switch(actionType){
@@ -83,15 +89,35 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.modal.title = 'Edit employee';
                 this.modal.buttonTitle = 'Save changes';
                 this.selectedEmployee = employee;
-                console.log(this.selectedEmployee);
-            break;
+                break;
         }
         
         this.modalFields.next(this.modal);
 
     }
 
-    
+    public searchEmployee(searchValue: string): void {
+        if( searchValue === '') {
+            this.searchEmployees = this.employees;
+        } else {
+            this.searchEmployees = this.employees.filter(employee => {
+               return  employee.name.toLowerCase().includes(searchValue.toLowerCase());
+            })
+        }
+    }
 
+    public checkForm(): boolean {
 
+        const invalid = this.employeeForm.controls.name.invalid && this.employeeForm.controls.email &&
+        this.employeeForm.controls.jobTitle.invalid && this.employeeForm.controls.phoneNumber.invalid &&
+        this.employeeForm.controls.imageUrl.invalid;
+        console.log(this.employeeForm.controls.name.invalid);
+        return invalid ? false : true;
+    }
+
+    public addEmployee(): void {
+        console.log("form valid: ", this.checkForm());
+        console.log('value entred :', this.employeeForm.get('name').value);
+
+    }
 }

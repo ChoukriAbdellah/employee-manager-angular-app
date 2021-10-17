@@ -1,8 +1,4 @@
-
-
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" style="color:white;">Employee Manager</a>
@@ -17,7 +13,7 @@
        </ul>
        <form class="form-inline my-2 my-lg-0">
           <input type="search" 
-           name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees..." required>
+           name="key" id="searchName" (input)="searchEmployee($event.target.value)" class="form-control mr-sm-2" placeholder="Search employees..." >
        </form>
     </div>
   </nav>
@@ -72,12 +68,13 @@
    </div>
 </div>
 
- 
+  <loading-component *ngIf="!dataLoaded"></loading-component>
+
   <manager *ngIf="!displayEmployeeList" ></manager>
 
   <div *ngIf="displayEmployeeList" class="container" id="main-container">
   <div class="row">
-    <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
+    <div *ngFor="let employee of searchEmployees" class="col-md-6 col-xl-3">
        <div class="card m-b-30">
           <div class="card-body row">
              <div class="col-6">
@@ -113,14 +110,26 @@
             </button>
          </div>
          <div class="modal-body">
-            <form [formGroup]="employeeForm" >
+            <form [formGroup]="employeeForm"  (ngSubmit)="addEmployee()">
             <div class="form-group">
                <label for="name">Name</label>
-               <input type="text"  name="name" formControlName="name" class="form-control" id="name" placeholder="Name" value="{{this.selectedEmployee?.name}}" required>
+               <input type="text"  name="name" formControlName="name" class="form-control" id="name" placeholder="Name" value="{{this.selectedEmployee?.name}}" >
+                  <div *ngIf="this.employeeForm.controls.name.invalid && (this.employeeForm.controls.name.dirty || this.employeeForm.controls.name.touched)"
+                     class="alert">
+                     <div *ngIf="this.employeeForm.controls.name.errors?.required" style="color: red">
+                        Name is required.
+                     </div>
+                  </div>
             </div>
             <div class="form-group">
                <label for="email">Email Address</label>
-               <input type="email"  name="email" class="form-control" id="email" placeholder="Email" value="{{this.selectedEmployee?.email}}" required>
+               <input type="email"  name="email" formControlName="email" class="form-control" id="email" placeholder="Email" value="{{this.selectedEmployee?.email}}" required>
+                  <div *ngIf="this.employeeForm.controls.email.invalid && (this.employeeForm.controls.email.dirty || this.employeeForm.controls.email.touched)"
+                  class="alert">
+                     <div *ngIf="this.employeeForm.controls.email.errors?.required" style="color: red">
+                        Email is required.
+                     </div>
+                  </div>
             </div>
             <div class="form-group">
                <label for="phone">Job title</label>
@@ -136,7 +145,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="submitForm()" >{{ (modalFields | async)?.buttonTitle }}</button>
+                <button type="submit" class="btn btn-primary"  >{{ (modalFields | async)?.buttonTitle }}</button>
             </div>
             </form>
          </div>

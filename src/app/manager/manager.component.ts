@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
 import { Manager } from "./model/manager";
 import { ManagerService } from "./shared/manager.service";
 
@@ -18,7 +17,7 @@ export class ManagerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.managerService.getManagers().subscribe(managers => {
+        this.managerService.getManagers().subscribe( managers => {
             this.managers = managers;
         });
     }

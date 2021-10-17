@@ -1,7 +1,7 @@
 export interface Manager {
     id: number;
     firstName: string;
-    lasttName: string;
+    lastName: string;
     qualification: string;
     age: number;
     email: string;
